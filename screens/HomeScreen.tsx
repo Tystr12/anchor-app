@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -9,7 +10,8 @@ export default function HomeScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.safeArea}>
+      <Text style={styles.welcome}> Welcome to Anchor ⚓️</Text>
       <ScrollView contentContainerStyle={styles.content}>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('PanicHelp')}>
           <Text style={styles.buttonText}>I’m Feeling Anxious</Text>
@@ -27,15 +29,26 @@ export default function HomeScreen() {
           <Text style={styles.buttonText}>View My Anchor Notes</Text>
         </TouchableOpacity>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#e2f0e4',
+  },
   container: {
     flex: 1,
     backgroundColor: '#e2f0e4',
   },
+  welcome: {
+  fontSize: 26,
+  fontWeight: '700',
+  textAlign: 'center',
+  marginBottom: 20,
+  color: '#003049',
+},
   content: {
     paddingTop: 80,
     paddingBottom: 40,
