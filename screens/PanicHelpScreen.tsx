@@ -4,7 +4,7 @@ import BreathingOrb from '../components/BreathingOrb';
 
 export default function PanicHelpScreen() {
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView style={styles.scroll} contentContainerStyle={styles.container}>
       <Text style={styles.heading}>You’re okay. What you’re feeling is anxiety — not danger. ⚓️</Text>
       <BreathingOrb size={80}></BreathingOrb>
       <Text style={styles.sectionTitle}>Common Panic Attack Symptoms:</Text>
@@ -28,11 +28,14 @@ export default function PanicHelpScreen() {
 }
 
 const styles = StyleSheet.create({
+  scroll: {
+    flex: 1,
+    backgroundColor: '#e0f3ff',
+  },
   container: {
     paddingTop: 60,
     paddingBottom: 60,
     paddingHorizontal: 20,
-    backgroundColor: '#e0f3ff',
   },
   heading: {
     fontSize: 22,
