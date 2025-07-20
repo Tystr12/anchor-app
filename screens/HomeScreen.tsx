@@ -40,7 +40,7 @@ export default function HomeScreen() {
           <Text style={styles.buttonText}>I’m Feeling Anxious</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('LogDay')}>
           <Text style={styles.buttonText}>Log My Day</Text>
         </TouchableOpacity>
 
