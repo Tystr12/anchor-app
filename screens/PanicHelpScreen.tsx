@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import BreathingOrb from '../components/BreathingOrb';
 
 export default function PanicHelpScreen() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.heading}>You’re okay. What you’re feeling is anxiety — not danger. ⚓️</Text>
-
+      <BreathingOrb size={80}></BreathingOrb>
       <Text style={styles.sectionTitle}>Common Panic Attack Symptoms:</Text>
       <Text style={styles.symptom}>• Racing heart — a normal response to adrenaline</Text>
       <Text style={styles.symptom}>• Dizziness or lightheadedness — caused by fast breathing</Text>
