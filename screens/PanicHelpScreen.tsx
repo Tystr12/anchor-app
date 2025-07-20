@@ -1,10 +1,15 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import BreathingOrb from '../components/BreathingOrb';
 
 export default function PanicHelpScreen() {
+  const navigation = useNavigation();
   return (
     <ScrollView style={styles.scroll} contentContainerStyle={styles.container}>
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        <Text style={styles.backButtonText}>← Back</Text>
+      </TouchableOpacity>
       <Text style={styles.heading}>You’re okay. What you’re feeling is anxiety — not danger. ⚓️</Text>
       <BreathingOrb size={80}></BreathingOrb>
       <Text style={styles.sectionTitle}>Common Panic Attack Symptoms:</Text>
@@ -36,6 +41,19 @@ const styles = StyleSheet.create({
     paddingTop: 60,
     paddingBottom: 60,
     paddingHorizontal: 20,
+  },
+  backButton: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    marginBottom: 10,
+    backgroundColor: '#d0e7ff',
+    borderRadius: 6,
+  },
+  backButtonText: {
+    fontSize: 16,
+    color: '#003049',
+    fontWeight: '500',
   },
   heading: {
     fontSize: 22,
