@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Button } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Button, Alert, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import BreathingOrb from '../components/BreathingOrb';
 
@@ -59,6 +58,38 @@ export default function LogDayScreen() {
         }
     };
 
+    const handleDelete = (logId: string) => {
+        if (Platform.OS === 'web') {
+            const confirmed = window.confirm('Are you sure you want to delete this entry?');
+            if (confirmed) {
+                deleteEntry(logId);
+            }
+        } else {
+            Alert.alert(
+                'Delete Entry',
+                'Are you sure you want to delete this entry?',
+                [
+                    { text: 'Cancel', style: 'cancel' },
+                    {
+                        text: 'Delete',
+                        style: 'destructive',
+                        onPress: () => deleteEntry(logId),
+                    },
+                ]
+            );
+        }
+    };
+
+    const deleteEntry = async (logId: string) => {
+        try {
+            const updatedLogs = logs.filter((l) => l.id !== logId);
+            await AsyncStorage.setItem('logs', JSON.stringify(updatedLogs));
+            setLogs(updatedLogs);
+        } catch (error) {
+            console.error('Error deleting entry:', error);
+        }
+    };
+
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.content}>
             <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
@@ -79,35 +110,15 @@ export default function LogDayScreen() {
 
             <Text style={styles.sectionTitle}>Recent Logs</Text>
             {logs.slice(0, 5).map((log) => (
-                <TouchableOpacity
-                    key={log.id}
-                    style={styles.logCard}
-                    onLongPress={() => {
-                        Alert.alert(
-                            'Delete Entry',
-                            'Are you sure you want to delete this entry?',
-                            [
-                                { text: 'Cancel', style: 'cancel' },
-                                {
-                                    text: 'Delete',
-                                    style: 'destructive',
-                                    onPress: async () => {
-                                        try {
-                                            const updatedLogs = logs.filter((l) => l.id !== log.id);
-                                            await AsyncStorage.setItem('logs', JSON.stringify(updatedLogs));
-                                            setLogs(updatedLogs);
-                                        } catch (error) {
-                                            console.error('Error deleting entry:', error);
-                                        }
-                                    },
-                                },
-                            ]
-                        );
-                    }}
-                >
-                    <Text style={styles.logDate}>{log.timestamp}</Text>
+                <View key={log.id} style={styles.logCard}>
+                    <View style={styles.logCardHeader}>
+                        <Text style={styles.logDate}>{log.timestamp}</Text>
+                        <TouchableOpacity onPress={() => handleDelete(log.id)} style={styles.deleteButton}>
+                            <Text style={styles.deleteButtonText}>✕</Text>
+                        </TouchableOpacity>
+                    </View>
                     <Text style={styles.logText}>{log.text}</Text>
-                </TouchableOpacity>
+                </View>
             ))}
         </ScrollView>
     );
@@ -185,6 +196,22 @@ const styles = StyleSheet.create({
         marginTop: 10,
         borderColor: '#ddd',
         borderWidth: 1,
+    },
+    logCardHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    deleteButton: {
+        backgroundColor: '#ffcccc',
+        borderRadius: 4,
+        paddingHorizontal: 8,
+        paddingVertical: 2,
+    },
+    deleteButtonText: {
+        color: '#900',
+        fontWeight: 'bold',
+        fontSize: 14,
     },
     logDate: {
         fontSize: 12,
